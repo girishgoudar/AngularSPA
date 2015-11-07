@@ -2,6 +2,7 @@ var o365CorsApp = angular.module("o365CorsApp", ['ngRoute', 'AdalAngular'])
 o365CorsApp.factory("ShareData", function () {
     return { value: 0 }
 });
+
 o365CorsApp.config(['$routeProvider', '$httpProvider', 'adalAuthenticationServiceProvider', function ($routeProvider, $httpProvider, adalProvider) {
     $routeProvider
            .when('/',
