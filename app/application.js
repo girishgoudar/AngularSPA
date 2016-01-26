@@ -53,8 +53,8 @@ o365CorsApp.controller("ContactsController", function ($scope, $location, ShareD
         $scope.contacts = response.data.value;
     });
 
-    $scope.editUser = function (userName) {
-        ShareData.value = userName;
+    $scope.editUser = function (contactId) {
+        ShareData.value = contactId;
         $location.path('/contacts/edit');
     };
     $scope.deleteUser = function (contactId) {
