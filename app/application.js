@@ -1,7 +1,5 @@
+//Custom module with dependencies on ngRoute and AdalAngular providers
 var o365CorsApp = angular.module("o365CorsApp", ['ngRoute', 'AdalAngular'])
-o365CorsApp.factory("ShareData", function () {
-    return { value: 0 }
-});
 
 o365CorsApp.config(['$routeProvider', '$httpProvider', 'adalAuthenticationServiceProvider', function ($routeProvider, $httpProvider, adalProvider) {
     $routeProvider
@@ -37,14 +35,20 @@ o365CorsApp.config(['$routeProvider', '$httpProvider', 'adalAuthenticationServic
     var adalConfig = {
         tenant: '5b532de2-3c90-4e6b-bf85-db0ed9cf5b48',
         clientId: '1cdf3582-12e3-405d-8ea3-315bda8df207',
-        extraQueryParameter: 'nux=1',
         endpoints: {
            "https://outlook.office365.com/api/v1.0": "https://outlook.office365.com/"
         }
     };
     adalProvider.init(adalConfig, $httpProvider);
 }]);
-o365CorsApp.controller("ContactsController", function ($scope, $q, $location, $http, ShareData, o365CorsFactory) {
+
+
+o365CorsApp.factory("ShareData", function () {
+    return { value: 0 }
+});
+
+
+o365CorsApp.controller("ContactsController", function ($scope, $location, ShareData, o365CorsFactory) {
     o365CorsFactory.getContacts().then(function (response) {
         $scope.contacts = response.data.value;
     });
@@ -58,7 +62,7 @@ o365CorsApp.controller("ContactsController", function ($scope, $q, $location, $h
         $location.path('/contacts/delete');
     };
 });
-o365CorsApp.controller("ContactsNewController", function ($scope, $q, $http, $location, o365CorsFactory) {
+o365CorsApp.controller("ContactsNewController", function ($scope, $location,o365CorsFactory) {
     $scope.add = function () {
         var givenName = $scope.givenName
         var surName = $scope.surName
@@ -77,7 +81,7 @@ o365CorsApp.controller("ContactsNewController", function ($scope, $q, $http, $lo
         });
     }
 });
-o365CorsApp.controller("ContactsEditController", function ($scope, $q, $http, $location, ShareData, o365CorsFactory) {
+o365CorsApp.controller("ContactsEditController", function ($scope,$location, ShareData, o365CorsFactory) {
     var id = ShareData.value;
 
     o365CorsFactory.getContact(id).then(function (response) {
@@ -105,7 +109,7 @@ o365CorsApp.controller("ContactsEditController", function ($scope, $q, $http, $l
         });
     };
 });
-o365CorsApp.controller("ContactsDeleteController", function ($scope, $q, $http, $location, ShareData, o365CorsFactory) {
+o365CorsApp.controller("ContactsDeleteController", function ($scope, $location, ShareData, o365CorsFactory) {
     var id = ShareData.value;
    
     o365CorsFactory.deleteContact(id).then(function () {
